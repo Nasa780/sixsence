@@ -1,6 +1,7 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
 
 const authRoutes = require("./src/routes/auth");
 const queueRoutes = require("./src/routes/queueRoutes");
@@ -19,14 +20,19 @@ app.use(express.json());
 
 // Route principale
 app.get("/", (req, res) => {
-    res.json({ message: "Sixsence Backend API is running" });
+  res.json({ message: "Sixsence Backend API is running" });
 });
 
-// Utiliser les routes Discord
+// Routes d'authentification
 app.use("/", authRoutes);
+
+const leaderboardRoutes = require("./src/routes/leaderboard");
+app.use("/", leaderboardRoutes);
+
+// Routes de la file d'attente
 app.use("/", queueRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-    console.log(`🚀 Sixsence Backend running on port ${PORT}`);
+  console.log(`🚀 Sixsence Backend running on port ${PORT}`);
 });

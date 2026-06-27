@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getToken, isAuthenticated } from "../utils/auth";
 
 export default function QueuePage() {
   const [user, setUser] = useState(null);
@@ -8,14 +9,16 @@ export default function QueuePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/";
-      return;
-    }
+if (!isAuthenticated()) {
+  window.location.href = "/";
+  return;
+}
 
-    fetch("http://localhost:3001/me", {
-      headers: { Authorization: `Bearer ${token}` },
+const token = getToken();
+
+    fetch("https://sixsence-backend.onrender.com/me", {
+      headers: { Authorization: `Bearer ${getToken()}`
+ },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -23,8 +26,9 @@ export default function QueuePage() {
         else window.location.href = "/";
       });
 
-    fetch("http://localhost:3001/queue/status", {
-      headers: { Authorization: `Bearer ${token}` },
+    fetch("https://sixsence-backend.onrender.com/queue/status", {
+      headers: { Authorization: `Bearer ${getToken()}`
+ },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -34,8 +38,9 @@ export default function QueuePage() {
         }
       });
 
-    fetch("http://localhost:3001/queue/list", {
-      headers: { Authorization: `Bearer ${token}` },
+    fetch("https://sixsence-backend.onrender.com/queue/list", {
+      headers: { Authorization: `Bearer ${getToken()}`
+ },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -62,10 +67,11 @@ export default function QueuePage() {
 
   async function joinQueue() {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:3001/queue/join", {
+    const res = await fetch("https://sixsence-backend.onrender.com/queue/join", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`
+,
         "Content-Type": "application/json",
       },
     });
@@ -81,10 +87,11 @@ export default function QueuePage() {
 
   async function leaveQueue() {
     const token = localStorage.getItem("token");
-    await fetch("http://localhost:3001/queue/leave", {
+    await fetch("https://sixsence-backend.onrender.com/queue/leave", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`
+,
         "Content-Type": "application/json",
       },
     });
@@ -96,8 +103,9 @@ export default function QueuePage() {
 
   function refreshPlayers() {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3001/queue/list", {
-      headers: { Authorization: `Bearer ${token}` },
+    fetch("https://sixsence-backend.onrender.com/queue/list", {
+      headers: { Authorization: `Bearer ${getToken()}`
+ },
     })
       .then((res) => res.json())
       .then((data) => setPlayers(data.players || []));

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getToken, isAuthenticated } from "../utils/auth";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -8,6 +9,19 @@ export default function Home() {
 
     // 1) Lire le token dans l'URL
     const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    if (code) {
+      fetch(`https://sixsence-backend.onrender.com/auth/discord/callback?code=${code}`)
+        .then(res => res.json())
+        .then(data => {
+if (data.token) {
+  localStorage.setItem("token", data.token);
+  window.location.href = data.redirect;
+}
+        });
+      return; // On stoppe ici pour éviter le reste du useEffect
+    }
     const tokenFromUrl = params.get("token");
 
     if (tokenFromUrl) {
@@ -16,11 +30,12 @@ export default function Home() {
     }
 
     // 2) Charger l'utilisateur
-    const token = localStorage.getItem("token");
-    if (!token) return;
+if (!isAuthenticated()) return;
 
-    fetch("http://localhost:3001/me", {
-      headers: { Authorization: `Bearer ${token}` },
+const token = getToken();
+
+    fetch("https://sixsence-backend.onrender.com/me", {
+      headers: { Authorization: `Bearer ${getToken()}` },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -42,7 +57,7 @@ export default function Home() {
 
         {!user ? (
           <a
-            href="http://localhost:3001/auth/discord"
+            href="https://sixsence-backend.onrender.com/auth/discord"
             className="sog-button block mx-auto w-[300px]"
           >
             ► SE CONNECTER AVEC DISCORD
