@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const { authMiddleware } = require("../../middleware/auth");
-const supabase = require("../../supabase");
+const supabase = require("../utils/supabase");
 
 router.get("/leaderboard/top10", authMiddleware, async (req, res) => {
-  const { data: players } = await supabase
-    .from("players")
-    .select("*")
-    .order("points", { ascending: false })
+  const { data: players, error: playersError } = await supabase
+    .from("users")
+    .select("discord_id, username, avatar, ranked_points")
+    .order("ranked_points", { ascending: false })
     .limit(10);
 
-  const { data: teams } = await supabase
+  const { data: teams, error: teamsError } = await supabase
     .from("teams")
-    .select("*")
+    .select("id, name, logo, points")
     .order("points", { ascending: false })
     .limit(10);
 

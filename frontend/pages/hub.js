@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { getToken } from "../utils/auth";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 import RankedModeCard from "../components/RankedModeCard";
 import LeaderboardPreview from "../components/LeaderboardPreview";
 
 export default function RankedHub() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [topPlayers, setTopPlayers] = useState([]);
   const [topTeams, setTopTeams] = useState([]);
 
   useEffect(() => {
     const token = getToken();
-    if (!token) return navigate("/");
+    console.log("TOKEN =", token); // ← ajoute ça
+    if (!token) return router.push("/");
 
     fetch("https://sixsence-backend.onrender.com/leaderboard/top10", {
       headers: { Authorization: `Bearer ${token}` }
@@ -32,7 +33,7 @@ export default function RankedHub() {
           title="MODE CLASSÉ"
           description="Solo 4v4 & 5v5 - Affronte les meilleurs joueurs !"
           button="Jouer"
-          onClick={() => navigate("/queue")}
+          onClick={() => router.push("/queue")}
           color="red"
         />
 
