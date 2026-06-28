@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getToken } from "../utils/auth";
+import { getToken } from "../../utils/auth";
 import { useRouter } from "next/router";
-import RankedModeCard from "../src/components/RankedModeCard";
-import LeaderboardPreview from "../src/components/LeaderboardPreview";
+import RankedModeCard from "../components/RankedModeCard";
+import LeaderboardPreview from "../components/LeaderboardPreview";
 
 export default function RankedHub() {
   const router = useRouter();
