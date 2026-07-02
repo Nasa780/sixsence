@@ -1,25 +1,28 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./pages/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/styles/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {
-      colors: {
-        sog: {
-          green: "#00ff66",
-          dark: "#001100",
-          glow: "rgba(0,255,100,0.4)",
-        },
-      },
-      fontFamily: {
-        sog: ["'Share Tech Mono'", "monospace"],
-      },
-      boxShadow: {
-        sog: "0 0 12px rgba(0,255,80,0.4)",
-      },
+    screens: {
+      // Mobile
+      mq359: { raw: "screen and (max-width: 359px)" },
+      mq414: { raw: "screen and (max-width: 414px)" },
+      mq450: { raw: "screen and (max-width: 450px)" },
+
+      // Tablette
+      mq451_675: { raw: "screen and (min-width: 451px) and (max-width: 675px)" },
+
+      // Petit laptop
+      mq676_750: { raw: "screen and (min-width: 676px) and (max-width: 750px)" },
+
+      // Laptop moyen
+      mq751_800: { raw: "screen and (min-width: 751px) and (max-width: 800px)" },
     },
   },
-  plugins: [],
+  corePlugins: {
+    preflight: false,
+  },
 };
