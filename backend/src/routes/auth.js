@@ -108,12 +108,16 @@ res.cookie("session", token, {
   httpOnly: true,
   secure: true,
   sameSite: "none",
+  // domain supprimé
+  path: "/",
 });
 
 console.log("FRONTEND_URL =", process.env.FRONTEND_URL);
 
-// Redirection vers le frontend AVEC le token
-res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+// 🔥 Redirection propre (sans token dans l’URL)
+res.redirect("https://sixsence.fr/auth/callback");
+
+
 
   } catch (err) {
     console.log("===== ERREUR DISCORD =====");

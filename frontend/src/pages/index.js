@@ -11,18 +11,21 @@ import ContainerMobile from "../components/ContainerMobile";
 
 export default function Home() {
 
-  // 🔥 Récupération du token Discord dans l’URL
+  // 🔥 Vérifier la session dès l'arrivée sur la Home
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-
-    if (token) {
-      // Stocker le token
-      localStorage.setItem("discord_token", token);
-
-      // Nettoyer l’URL (enlever ?token=...)
-      window.history.replaceState({}, "", window.location.pathname);
-    }
+    fetch("https://sixsence-backend.onrender.com/me", {
+      credentials: "include",
+    })
+      .then(res => {
+        if (!res.ok) throw new Error("Not logged");
+        return res.json();
+      })
+      .then(user => {
+        console.log("🔥 USER CONNECTÉ :", user);
+      })
+      .catch(() => {
+        console.log("❌ PAS CONNECTÉ");
+      });
   }, []);
 
   return (

@@ -9,6 +9,9 @@ const queueRoutes = require("./src/routes/queueRoutes");
 
 const app = express();
 
+// 🔥 Indispensable pour Render → autorise les cookies secure
+app.set("trust proxy", true);
+
 // 🔥 FIX : empêcher les réponses 304
 app.set("etag", false);
 app.use((req, res, next) => {
@@ -19,7 +22,11 @@ app.use((req, res, next) => {
 // 🔥 Autoriser les cookies cross-site
 app.use(
   cors({
-    origin: "https://sixsence.vercel.app",
+    origin: [
+      "https://sixsence.fr",
+      "https://www.sixsence.fr",
+      "https://sixsence.vercel.app"
+    ],
     credentials: true,
   })
 );
@@ -31,7 +38,7 @@ app.use(express.json());
 
 // Route principale
 app.get("/", (req, res) => {
-  res.redirect("https://sixsence.vercel.app");
+  res.redirect("https://sixsence.fr");
 });
 
 // Routes d'authentification
