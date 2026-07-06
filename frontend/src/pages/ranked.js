@@ -10,31 +10,28 @@ import Sectionmarginranked4 from "../components/Sectionmarginranked4";
 import Sectionmarginranked5 from "../components/Sectionmarginranked5";
 import Sectionmarginranked6 from "../components/Sectionmarginranked6";
 import Footerranked from "../components/Footerranked";
-import Background from "../components/Background";
 
-/*
 // 📱 Version mobile Ranked
-import ApprankedMobile from "../components/ApprankedMobile";
+import HeaderMobile from "../components/HeaderMobile";
 import SectionmarginrankedMobile from "../components/SectionmarginrankedMobile";
 import Sectionmarginranked2Mobile from "../components/Sectionmarginranked2Mobile";
 import Sectionmarginranked3Mobile from "../components/Sectionmarginranked3Mobile";
 import Sectionmarginranked4Mobile from "../components/Sectionmarginranked4Mobile";
 import Sectionmarginranked5Mobile from "../components/Sectionmarginranked5Mobile";
+import Sectionmarginranked6Mobile from "../components/Sectionmarginranked6Mobile";
 import FooterrankedMobile from "../components/FooterrankedMobile";
-*/
+
+import Background from "../components/Background";
 
 export default function Ranked() {
 
-  // 🔥 Récupération du token Discord dans l’URL
+  // 🔥 Récupération du token JWT dans l’URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
 
     if (token) {
-      // Stocker le token
-      localStorage.setItem("discord_token", token);
-
-      // Nettoyer l’URL (enlever ?token=...)
+      localStorage.setItem("session", token);
       window.history.replaceState({}, "", window.location.pathname);
     }
   }, []);
@@ -51,9 +48,8 @@ export default function Ranked() {
         }}
       />
 
-{/* HEXAGONAL BACKGROUND */}
-<Background />
-
+      {/* HEXAGONAL BACKGROUND */}
+      <Background />
 
       {/* 🖥️ DESKTOP */}
       <div className="hidden md:flex flex-col items-center justify-center w-full">
@@ -68,9 +64,8 @@ export default function Ranked() {
       </div>
 
       {/* 📱 MOBILE */}
-      {/*
       <div className="flex md:hidden flex-col items-center justify-center w-full px-4">
-        <ApprankedMobile />
+        <HeaderMobile />
         <SectionmarginrankedMobile />
         <Sectionmarginranked2Mobile />
         <Sectionmarginranked3Mobile />
@@ -79,7 +74,7 @@ export default function Ranked() {
         <Sectionmarginranked6Mobile />
         <FooterrankedMobile />
       </div>
-      */}
+
     </div>
   );
 }

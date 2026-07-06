@@ -1,11 +1,16 @@
 import Image from "next/image";
+import useUser from "../hooks/useUser";
 
-type NavigationProps = {
-  className?: string;
-  user?: any; // { username, discriminator, avatar }
-};
+const Navigationaccueil = ({ className = "" }) => {
+  const user = useUser();
 
-const Navigationaccueil = ({ className = "", user }: NavigationProps) => {
+  const avatar =
+    user?.avatar && user.avatar.startsWith("http")
+      ? user.avatar
+      : "/assets/default-avatar.png";
+
+  const username = user?.username || "Utilisateur";
+
   return (
     <div className={`w-[2174px] max-w-full flex items-center justify-between pt-5 px-8 pb-4 ${className}`}>
 
@@ -19,26 +24,24 @@ const Navigationaccueil = ({ className = "", user }: NavigationProps) => {
         </div>
       </div>
 
-      {/* SI CONNECTÉ → AVATAR + PSEUDO */}
+      {/* SI CONNECTÉ */}
       {user ? (
         <div className="flex items-center gap-3 bg-[#1a1b22] px-3 py-2 rounded-md border border-[#333]">
           <img
-            src={`https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.png`}
+            src={avatar}
             className="w-8 h-8 rounded-full"
             alt="avatar"
           />
-          <div className="text-sm font-semibold">
-            {user.username}
-            <span className="text-[#888]">#{user.discriminator}</span>
+          <div className="text-sm font-semibold text-white">
+            {username}
           </div>
         </div>
       ) : (
-        /* SINON → BOUTON DISCORD */
         <button
           onClick={() => {
             window.location.href = "https://sixsence-backend.onrender.com/auth/discord";
           }}
-          className="cursor-pointer border-[rgba(88,101,242,0.33)] border-solid border-[1px] py-2 px-4 bg-[rgba(88,101,242,0.15)] rounded-md flex items-center gap-[7px] hover:bg-[rgba(112,128,255,0.15)] hover:border-[rgba(112,128,255,0.33)]"
+          className="cursor-pointer border-[rgba(88,101,242,0.33)] border-solid border-[1px] py-2 px-4 bg-[rgba(88,101,242,0.15)] rounded-md flex items-center gap-[7px]"
         >
           <Image
             className="h-3 w-3"
